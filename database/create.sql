@@ -1,6 +1,6 @@
 -- BASE DE DATOS EN SQL SERVER
 
-CREATE DATABASE sistema_gestion_matricula;
+CREATE DATABASE sistema_control_matricula;
 USE sistema_gestion_matricula;
 
 -- TABLES
