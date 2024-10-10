@@ -1,5 +1,84 @@
 --  procedures de estudiantes
 
+-- obtener todos los estudiantes
+CREATE PROCEDURE sp_obtener_estudiantes
+AS
+BEGIN
+    SELECT
+        e.id_estudiante,
+        e.nombres,
+        e.apellidos,
+        e.cedula,
+        e.fecha_nacimiento,
+        e.direccion,
+        e.telefono,
+        e.partida_nacimiento,
+        e.fecha_matricula,
+        e.barrio,
+        e.peso,
+        e.talla,
+        e.territorio_indigena,
+        e.comunidad_indigena,
+        e.pais,
+        e.departamento,
+        e.municipio,
+        e.nacionalidad,
+        s.nombre AS sexo,
+        et.nombre AS etnia,
+        l.nombre AS lengua,
+        d.nombre AS discapacidad,
+        txe.id_tutor_x_estudiante,
+        txe.id_tutor,
+        txe.id_estudiante
+    FROM estudiantes e
+    INNER JOIN sexos s ON e.id_sexo = s.id_sexo
+    INNER JOIN etnias et ON e.id_etnia = et.id_etnia
+    INNER JOIN lenguas l ON e.id_lengua = l.id_lengua
+    INNER JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
+    INNER JOIN tutores_x_estudiantes txe ON e.id_estudiante = txe.id_estudiante;
+END;
+
+-- obtener estudiante por id
+CREATE PROCEDURE sp_obtener_estudiante
+    @id_estudiante INT
+AS
+BEGIN
+    SELECT
+        e.id_estudiante,
+        e.nombres,
+        e.apellidos,
+        e.cedula,
+        e.fecha_nacimiento,
+        e.direccion,
+        e.telefono,
+        e.partida_nacimiento,
+        e.fecha_matricula,
+        e.barrio,
+        e.peso,
+        e.talla,
+        e.territorio_indigena,
+        e.comunidad_indigena,
+        e.pais,
+        e.departamento,
+        e.municipio,
+        e.nacionalidad,
+        s.nombre AS sexo,
+        et.nombre AS etnia,
+        l.nombre AS lengua,
+        d.nombre AS discapacidad,
+        txe.id_tutor_x_estudiante,
+        txe.id_tutor,
+        txe.id_estudiante
+    FROM estudiantes e
+    INNER JOIN sexos s ON e.id_sexo = s.id_sexo
+    INNER JOIN etnias et ON e.id_etnia = et.id_etnia
+    INNER JOIN lenguas l ON e.id_lengua = l.id_lengua
+    INNER JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
+    INNER JOIN tutores_x_estudiantes txe ON e.id_estudiante = txe.id_estudiante
+    WHERE e.id_estudiante = @id_estudiante;
+END;
+
+-- crear tabla estudiantes
 CREATE PROCEDURE sp_insertar_estudiante
     @nombres VARCHAR(255),
     @apellidos VARCHAR(255),
@@ -75,6 +154,7 @@ BEGIN
     );
 END;
 
+-- editar estudiante
 CREATE PROCEDURE sp_editar_estudiante
     @id_estudiante INT,
     @nombres VARCHAR(255),
@@ -135,3 +215,18 @@ BEGIN
   END
 END;
 
+-- eliminar estudiante
+
+CREATE PROCEDURE sp_eliminar_estudiante
+    @id_estudiante INT
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM estudiantes WHERE id_estudiante = @id_estudiante)
+    BEGIN
+        DELETE FROM estudiantes WHERE id_estudiante = @id_estudiante;
+    END
+    ELSE
+    BEGIN
+        RAISERROR('El estudiante no existe', 16, 1);
+    END
+END;
