@@ -105,7 +105,7 @@ CREATE TABLE datos_academicos (
     id_turno INT,
     id_centro INT,
     id_estudiante INT,
-    FOREIGN KEY (modalidad) REFERENCES modalidades(id_modalidad),
+    FOREIGN KEY (id_modalidad) REFERENCES modalidades(id_modalidad),
     FOREIGN KEY (id_grado) REFERENCES grados(id_grado),
     FOREIGN KEY (id_seccion) REFERENCES secciones(id_seccion),
     FOREIGN KEY (id_turno) REFERENCES turnos(id_turno),
