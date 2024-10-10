@@ -99,7 +99,7 @@ CREATE TABLE datos_academicos (
     fecha_matricula DATE NOT NULL,
     nivel_educativo VARCHAR(255) NOT NULL,
     repitente BIT DEFAULT 0,
-    modalidad VARCHAR(100) NOT NULL,
+    id_modalidad INT,
     id_grado INT,
     id_seccion INT,
     id_turno INT,
