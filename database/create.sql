@@ -88,7 +88,6 @@ CREATE TABLE estudiantes(
     id_discapacidad INT,
     id_tutor_x_estudiante INT,
     FOREIGN KEY (id_sexo) REFERENCES sexos(id_sexo),
-    FOREIGN KEY (id_pais) REFERENCES paises(id_pais),
     FOREIGN KEY (id_etnia) REFERENCES etnias(id_etnia),
     FOREIGN KEY (id_lengua) REFERENCES lenguas(id_lengua),
     FOREIGN KEY (id_discapacidad) REFERENCES discapacidades(id_discapacidad),
