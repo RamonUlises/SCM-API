@@ -1,6 +1,6 @@
 -- triggers para tutores_x_estudiantes
 
-CREATE TRIGGER tr_validar_cedula_tutor_x_estudiante
+CREATE TRIGGER trg_validar_cedula_tutor_x_estudiante
 ON tutores_x_estudiantes
 FOR INSERT, UPDATE
 AS
@@ -15,7 +15,7 @@ BEGIN
     END
 END;
 
-CREATE TRIGGER tr_update_tutores_x_estudiantes
+CREATE TRIGGER trg_update_tutores_x_estudiantes
 ON tutores_x_estudiantes
 FOR UPDATE
 AS

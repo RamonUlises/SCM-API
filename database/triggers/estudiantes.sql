@@ -1,7 +1,7 @@
 -- triggers para estudiantes
 
 -- Trigger antes de insertar en la tabla estudiantes
-CREATE TRIGGER before_insert_estudiantes
+CREATE TRIGGER trg_agregar_estudiante
 BEFORE INSERT ON estudiantes
 FOR EACH ROW
 BEGIN
@@ -38,7 +38,7 @@ BEGIN
 END;
 
 -- Trigger antes de actualizar en la tabla estudiantes
-CREATE TRIGGER before_update_estudiantes
+CREATE TRIGGER trg_actualizar_estudiante
 BEFORE UPDATE ON estudiantes
 FOR EACH ROW
 BEGIN
