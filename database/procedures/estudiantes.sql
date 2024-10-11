@@ -4,38 +4,7 @@
 CREATE PROCEDURE sp_obtener_estudiantes
 AS
 BEGIN
-    SELECT
-        e.id_estudiante,
-        e.nombres,
-        e.apellidos,
-        e.cedula,
-        e.fecha_nacimiento,
-        e.direccion,
-        e.telefono,
-        e.partida_nacimiento,
-        e.fecha_matricula,
-        e.barrio,
-        e.peso,
-        e.talla,
-        e.territorio_indigena,
-        e.comunidad_indigena,
-        e.pais,
-        e.departamento,
-        e.municipio,
-        e.nacionalidad,
-        s.nombre AS sexo,
-        et.nombre AS etnia,
-        l.nombre AS lengua,
-        d.nombre AS discapacidad,
-        txe.id_tutor_x_estudiante,
-        txe.id_tutor,
-        txe.id_estudiante
-    FROM estudiantes e
-    INNER JOIN sexos s ON e.id_sexo = s.id_sexo
-    INNER JOIN etnias et ON e.id_etnia = et.id_etnia
-    INNER JOIN lenguas l ON e.id_lengua = l.id_lengua
-    INNER JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
-    INNER JOIN tutores_x_estudiantes txe ON e.id_estudiante = txe.id_estudiante;
+    SELECT * FROM estudiantes;
 END;
 
 -- obtener estudiante por id
@@ -43,39 +12,7 @@ CREATE PROCEDURE sp_obtener_estudiante
     @id_estudiante INT
 AS
 BEGIN
-    SELECT
-        e.id_estudiante,
-        e.nombres,
-        e.apellidos,
-        e.cedula,
-        e.fecha_nacimiento,
-        e.direccion,
-        e.telefono,
-        e.partida_nacimiento,
-        e.fecha_matricula,
-        e.barrio,
-        e.peso,
-        e.talla,
-        e.territorio_indigena,
-        e.comunidad_indigena,
-        e.pais,
-        e.departamento,
-        e.municipio,
-        e.nacionalidad,
-        s.nombre AS sexo,
-        et.nombre AS etnia,
-        l.nombre AS lengua,
-        d.nombre AS discapacidad,
-        txe.id_tutor_x_estudiante,
-        txe.id_tutor,
-        txe.id_estudiante
-    FROM estudiantes e
-    INNER JOIN sexos s ON e.id_sexo = s.id_sexo
-    INNER JOIN etnias et ON e.id_etnia = et.id_etnia
-    INNER JOIN lenguas l ON e.id_lengua = l.id_lengua
-    INNER JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
-    INNER JOIN tutores_x_estudiantes txe ON e.id_estudiante = txe.id_estudiante
-    WHERE e.id_estudiante = @id_estudiante;
+    SELECT * FROM estudiantes WHERE id_estudiante = @id_estudiante;
 END;
 
 -- crear tabla estudiantes
