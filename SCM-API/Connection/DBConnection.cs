@@ -4,7 +4,7 @@ namespace SCM_API.Connection
 {
     public class DBConnection
     {
-        private readonly string connectionString = "Server=RAMON\\SQLEXPRESS;Database=sistema_gestion_matricula;Integrated Security=True;";
+        private readonly string connectionString = "Server=MAYKELING\\SQLEXPRESS;Database=sistema_gestion_matricula;Integrated Security=True;";
 
         public SqlConnection AbrirConexion()
         {
