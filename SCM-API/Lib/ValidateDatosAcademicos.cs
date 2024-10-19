@@ -1,4 +1,4 @@
-﻿using SCM.API.Clase;
+﻿using SCM_API.Clase;
 
 namespace SCM_API.Lib
 {
@@ -10,14 +10,14 @@ namespace SCM_API.Lib
             {
                 new Validates().CodigoEstudiante(datosAcademicos.CodigoEstudiante);
                 new Validates().FechaMatricula(datosAcademicos.FechaMatricula);
-                new validates().string(datosAcademicos.NivelEducativo, "Nivel Educativo");
-                new validates().Boolean(datosAcademicos.repitente);
-                new validates().string(datosAcademicos.Grado, "Grado");
-                new validates().string(datosAcademicos.Seccion, "Seccion");
-                new validates().string(datosAcademicos.Turno, "Turno");
-                new validates().string(datosAcademicos.Centro, "Centro");
-                new validates().IdEstudiante(datosAcademicos.IdEstudiante);
-                new validates().string(datosAcademicos.Modalidad, "Modalidad");
+                new Validates().String(datosAcademicos.NivelEducativo, "Nivel Educativo");
+                new Validates().Boolean(datosAcademicos.Repitente);
+                new Validates().String(datosAcademicos.Modalidad, "Modalidad");
+                new Validates().String(datosAcademicos.Grado, "Grado");
+                new Validates().String(datosAcademicos.Seccion, "Seccion");
+                new Validates().String(datosAcademicos.Turno, "Turno");
+                new Validates().String(datosAcademicos.Centro, "Centro");
+                new Validates().Number(datosAcademicos.IdEstudiante);
 
                 return new Errors { message = "Datos Academicos creados", status = true };
             }
