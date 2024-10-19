@@ -18,7 +18,6 @@ namespace SCM_API.Models
                 SqlDataReader reader = command.ExecuteReader();
 
                 List<EstudiantesClass> estudiantes = [];
-
                 while (reader.Read())
                 {
                     EstudiantesClass estudiante = new()

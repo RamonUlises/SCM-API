@@ -1,4 +1,6 @@
-﻿namespace SCM_API.Lib
+﻿using System.Globalization;
+
+namespace SCM_API.Lib
 {
     public class Validates
     {
@@ -48,6 +50,18 @@
         public void Telefono(string element)
         {
             Expression(element, new ExpressionesRegulares().Telefono, "Teléfono", "0000-0000");
+        }
+        public void CodigoEstudiante(String element)
+        { 
+            Expression(element, new ExpressionesRegulares().CodigoEstudiante, "Código Estudiante", "000000");
+        }
+        public void IdEstudiante(string element)
+        {
+            Expression(element, new ExpressionesRegulares().IdEstudiante, "Id Estudiante", "000000");
+        }
+        public void FechaMatricula(string element)
+        {
+            Expression(element, new ExpressionesRegulares().Fecha, "Fecha Matrícula", "YYYY-MM-DD");
         }
     }
 }
