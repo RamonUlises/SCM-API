@@ -5,7 +5,7 @@
         public required string CodigoEstudiante { get; set; }
         public required string FechaMatricula { get; set; }
         public required string NivelEducativo { get; set; }
-        public required string Repitente { get; set; }
+        public required bool Repitente { get; set; }
         public required string Grado { get; set; }
         public required string Seccion { get; set; }
         public required string Turno { get; set; }

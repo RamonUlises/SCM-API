@@ -21,10 +21,10 @@ namespace SCM_API.Controllers
             return Ok(datosAcademicos);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult ObtenerDatosAcademicos(int id)
+        [HttpGet("{codigo}")]
+        public IActionResult ObtenerDatosAcademicos(string codigo)
         {
-            var datosAcademicos = new Models.DatosAcademicos().ObtenerDatosAcademicos(id);
+            var datosAcademicos = new Models.DatosAcademicos().ObtenerDatosAcademicosCodigo(codigo);
 
             if (datosAcademicos == null)
             {
@@ -34,69 +34,69 @@ namespace SCM_API.Controllers
             return Ok(datosAcademicos);
         }
 
-        [HttpPost]
-        public IActionResult CrearDatosAcademicos([FromBody] DatosAcademicosClass datosAcademicos)
-        {
-            try
-            {
-                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+        //[HttpPost]
+        //public IActionResult CrearDatosAcademicos([FromBody] DatosAcademicosClass datosAcademicos)
+        //{
+        //    try
+        //    {
+        //        var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
 
-                if (res.status == false)
-                {
-                    return BadRequest(new { res.message });
-                }
+        //        if (res.status == false)
+        //        {
+        //            return BadRequest(new { res.message });
+        //        }
 
-                var result = new Models.DatosAcademicos().CrearDatosAcademicos(datosAcademicos);
-                if (result.status == false)
-                {
-                    return BadRequest(new { result.message });
-                }
+        //        var result = new Models.DatosAcademicos().CrearDatosAcademicos(datosAcademicos);
+        //        if (result.status == false)
+        //        {
+        //            return BadRequest(new { result.message });
+        //        }
 
-                return Ok(new { result.message });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+        //        return Ok(new { result.message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { message = ex.Message });
+        //    }
+        //}
 
-        [HttpPut("{id}")]
-        public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
-        {
-            try
-            {
-                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+        //[HttpPut("{id}")]
+        //public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
+        //{
+        //    try
+        //    {
+        //        var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
 
-                if (res.status == false)
-                {
-                    return BadRequest(new { res.message });
-                }
+        //        if (res.status == false)
+        //        {
+        //            return BadRequest(new { res.message });
+        //        }
 
-                var result = new Models.DatosAcademicos().ActualizarDatosAcademicos(id, datosAcademicos);
-                if (result.status == false)
-                {
-                    return BadRequest(new { result.message });
-                }
+        //        var result = new Models.DatosAcademicos().ActualizarDatosAcademicos(id, datosAcademicos);
+        //        if (result.status == false)
+        //        {
+        //            return BadRequest(new { result.message });
+        //        }
 
-                return Ok(new { result.message });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+        //        return Ok(new { result.message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { message = ex.Message });
+        //    }
+        //}
 
-        [HttpDelete("{id}")]
-        public IActionResult EliminarDatosAcademicos(int id)
-        {
-            var result = new Models.DatosAcademicos().EliminarDatosAcademicos(id);
+        //[HttpDelete("{id}")]
+        //public IActionResult EliminarDatosAcademicos(int id)
+        //{
+        //    var result = new Models.DatosAcademicos().EliminarDatosAcademicos(id);
 
-            if (result.status == false)
-            {
-                return BadRequest(new { result.message });
-            }
+        //    if (result.status == false)
+        //    {
+        //        return BadRequest(new { result.message });
+        //    }
 
-            return Ok(new { result.message });
-        }
+        //    return Ok(new { result.message });
+        //}
     }
 }
