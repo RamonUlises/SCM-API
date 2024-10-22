@@ -12,12 +12,10 @@ namespace SCM_API.Models
             DBConnection dbConnection = new();
             SqlConnection connection = dbConnection.AbrirConexion();
 
-
-
             try
             {
                 List<TrasladoClass> traslados = [];
-                string query = "EXEC sp_obtener_traslados_por_estudiante";
+                string query = "EXEC sp_obtener_traslados";
                 SqlCommand command = new(query, connection);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -26,12 +24,12 @@ namespace SCM_API.Models
                     TrasladoClass traslado = new()
                     {
                         IdTraslado = reader["id_traslado"].ToString() ?? string.Empty,
-                        IdEstudiante = reader["id_estudiante"].ToString() ?? string.Empty,
-                        FechaTraslado = reader["fecha"].ToString() ?? string.Empty,
                         MotivoTraslado = reader["motivo_traslado"].ToString() ?? string.Empty,
-                        IdCentro = reader["id_centro"].ToString() ?? string.Empty,
-                        IdPeriodo = reader["id_periodo"].ToString() ?? string.Empty,
-                        CodigoEstudiante = reader["codigo_estudiante"].ToString() ?? string.Empty
+                        FechaTraslado = reader["fecha_traslado"].ToString() ?? string.Empty,
+                        CodigoEstudiante = reader["codigo_estudiante"].ToString() ?? string.Empty,
+                        IdCentro = reader["centro"].ToString() ?? string.Empty,
+                        IdPeriodo = reader["periodo"].ToString() ?? string.Empty,
+                        IdEstudiante = reader["estudiante"].ToString() ?? string.Empty,
 
                     };
 
@@ -41,7 +39,7 @@ namespace SCM_API.Models
                 dbConnection.CerrarConexion(connection);
                 return traslados;
             }
-            catch (SqlException ex)
+            catch
             {
                 dbConnection.CerrarConexion(connection);
                 return null;
@@ -54,7 +52,7 @@ namespace SCM_API.Models
                 DBConnection dbConnection = new();
                 SqlConnection connection = dbConnection.AbrirConexion();
 
-                string query = "EXEC sp_obtener_traslados_por_estudiante @Id_Estudiante";
+                string query = "EXEC sp_obtener_traslados_id @id";
                 SqlCommand command = new(query, connection);
                 command.Parameters.AddWithValue("@id", id);
 
@@ -65,14 +63,12 @@ namespace SCM_API.Models
                     TrasladoClass traslado = new()
                     {
                         IdTraslado = reader["id_traslado"].ToString() ?? string.Empty,
-                        IdEstudiante = reader["id_estudiante"].ToString() ?? string.Empty,
-                        FechaTraslado = reader["fecha"].ToString() ?? string.Empty,
                         MotivoTraslado = reader["motivo_traslado"].ToString() ?? string.Empty,
-                        IdCentro = reader["id_centro"].ToString() ?? string.Empty,
-                        IdPeriodo = reader["id_periodo"].ToString() ?? string.Empty ,
-                        CodigoEstudiante = reader["codigo_estudiante"].ToString() ?? string.Empty
-
-
+                        FechaTraslado = reader["fecha_traslado"].ToString() ?? string.Empty,
+                        CodigoEstudiante = reader["codigo_estudiante"].ToString() ?? string.Empty,
+                        IdCentro = reader["centro"].ToString() ?? string.Empty,
+                        IdPeriodo = reader["periodo"].ToString() ?? string.Empty,
+                        IdEstudiante = reader["estudiante"].ToString() ?? string.Empty,
                     };
 
                     dbConnection.CerrarConexion(connection);
@@ -82,7 +78,7 @@ namespace SCM_API.Models
                 dbConnection.CerrarConexion(connection);
                 return null;
             }
-            catch (SqlException ex)
+            catch
             {
                 return null;
             }
@@ -118,7 +114,37 @@ namespace SCM_API.Models
                 return new Errors { message = "Error al crear traslado", status = false };
             }
         }
+        public Errors EditarTraslado(int id, TrasladoClass traslado)
+        {
+            try
+            {
+                SqlConnection connection = new DBConnection().AbrirConexion();
+                string query = "EXEC sp_editar_traslado @Id_Traslado, @Id_Estudiante, @Fecha_Traslado, @Motivo_Traslado, @Id_Centro, @Id_Periodo, @Codigo_Estudiante";
 
+                SqlCommand command = new(query, connection);
+                command.Parameters.AddWithValue("@IdTraslado", id);
+                command.Parameters.AddWithValue("@IdEstudiante", traslado.IdEstudiante);
+                command.Parameters.AddWithValue("@FechaTraslado", traslado.FechaTraslado);
+                command.Parameters.AddWithValue("@MotivoTraslado", traslado.MotivoTraslado);
+                command.Parameters.AddWithValue("@IdCentro", traslado.IdCentro);
+                command.Parameters.AddWithValue("@IdPeriodo", traslado.IdPeriodo);
+                command.Parameters.AddWithValue("@CodigoEstudiante", traslado.CodigoEstudiante);
+
+                if (command.ExecuteNonQuery() > 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Traslado editado correctamente", status = true };
+                }
+
+                new DBConnection().CerrarConexion(connection);
+                return new Errors { message = "Error al editar traslado", status = false };
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new Errors { message = "Error al editar traslado", status = false };
+            }
+        }   
 
 
 

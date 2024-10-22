@@ -1,82 +1,58 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SCM_API.Models;
+
+using SCM_API.Clase;
 
 namespace SCM_API.Controllers
 {
+    [Route("api/traslado")]
+    [ApiController]
     public class Traslado : Controller
     {
-        // GET: Traslado
-        public ActionResult Index()
+        [HttpGet]
+        public IActionResult ObtenerTraslados()
         {
-            return View();
+            var traslados = new Traslados().ObtenerTraslado();
+
+            if (traslados == null)
+            {
+                return NotFound(new { message = "No se encontraron traslados" });
+            }
+
+            return Ok(traslados);
         }
 
-        // GET: Traslado/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        public IActionResult ObtenerTraslado(int id)
         {
-            return View();
+            var traslado = new Traslados().ObtenerTraslado(id);
+
+            if (traslado == null)
+            {
+                return NotFound(new { message = "Traslado no encontrado" });
+            }
+
+            return Ok(traslado);
         }
 
-        // GET: Traslado/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Traslado/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult CrearTraslado([FromBody] TrasladoClass traslado)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var result = new Traslados().CrearTraslado(traslado);
 
-        // GET: Traslado/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+                if (result.status == false)
+                {
+                    return BadRequest(new { result.message });
+                }
 
-        // POST: Traslado/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                return Ok(new { result.message });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
-            }
-        }
-
-        // GET: Traslado/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Traslado/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
