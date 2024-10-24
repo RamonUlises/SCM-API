@@ -4,15 +4,76 @@
 CREATE PROCEDURE sp_obtener_estudiantes
 AS
 BEGIN
-    SELECT * FROM estudiantes;
+    SELECT 
+        e.id_estudiante,
+        e.nombres,
+        e.apellidos,
+        e.cedula,
+        e.fecha_nacimiento,
+        e.direccion,
+        e.telefono,
+        e.partida_nacimiento,
+        e.fecha_matricula,
+        e.barrio,
+        e.peso,
+        e.talla,
+        e.territorio_indigena,
+        e.comunidad_indigena,
+        e.pais,
+        e.departamento,
+        e.municipio,
+        e.nacionalidad,
+        s.sexo,       
+        et.etnia,       
+        l.lengua,        
+        d.discapacidad,  
+        te.nombres as nombres_tutor        
+    FROM	
+        estudiantes e
+    LEFT JOIN sexos s ON e.id_sexo = s.id_sexo
+    LEFT JOIN etnias et ON e.id_etnia = et.id_etnia
+    LEFT JOIN lenguas l ON e.id_lengua = l.id_lengua
+    LEFT JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
+    LEFT JOIN tutores_x_estudiantes te ON e.id_tutor_x_estudiante = te.id_tutor_x_estudiante;
 END;
 
 -- obtener estudiante por id
 CREATE PROCEDURE sp_obtener_estudiante
-    @id_estudiante INT
+@id_estudiante INT
 AS
 BEGIN
-    SELECT * FROM estudiantes WHERE id_estudiante = @id_estudiante;
+    SELECT 
+        e.id_estudiante,
+        e.nombres,
+        e.apellidos,
+        e.cedula,
+        e.fecha_nacimiento,
+        e.direccion,
+        e.telefono,
+        e.partida_nacimiento,
+        e.fecha_matricula,
+        e.barrio,
+        e.peso,
+        e.talla,
+        e.territorio_indigena,
+        e.comunidad_indigena,
+        e.pais,
+        e.departamento,
+        e.municipio,
+        e.nacionalidad,
+        s.sexo,       
+        et.etnia,       
+        l.lengua,        
+        d.discapacidad,  
+        te.nombres as nombres_tutor        
+    FROM	
+        estudiantes e
+    LEFT JOIN sexos s ON e.id_sexo = s.id_sexo
+    LEFT JOIN etnias et ON e.id_etnia = et.id_etnia
+    LEFT JOIN lenguas l ON e.id_lengua = l.id_lengua
+    LEFT JOIN discapacidades d ON e.id_discapacidad = d.id_discapacidad
+    LEFT JOIN tutores_x_estudiantes te ON e.id_tutor_x_estudiante = te.id_tutor_x_estudiante
+	WHERE id_estudiante = @id_estudiante;
 END;
 
 -- crear tabla estudiantes
