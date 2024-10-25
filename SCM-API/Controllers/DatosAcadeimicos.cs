@@ -34,31 +34,31 @@ namespace SCM_API.Controllers
             return Ok(datosAcademicos);
         }
 
-        //[HttpPost]
-        //public IActionResult CrearDatosAcademicos([FromBody] DatosAcademicosClass datosAcademicos)
-        //{
-        //    try
-        //    {
-        //        var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+        [HttpPost]
+        public IActionResult CrearDatosAcademicos([FromBody] DatosAcademicosClass datosAcademicos)
+        {
+            try
+            {
+                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
 
-        //        if (res.status == false)
-        //        {
-        //            return BadRequest(new { res.message });
-        //        }
+                if (res.status == false)
+                {
+                    return BadRequest(new { res.message });
+                }
 
-        //        var result = new Models.DatosAcademicos().CrearDatosAcademicos(datosAcademicos);
-        //        if (result.status == false)
-        //        {
-        //            return BadRequest(new { result.message });
-        //        }
+                var result = new Models.DatosAcademicos().CrearDatosAcademicos(datosAcademicos);
+                if (result.status == false)
+                {
+                    return BadRequest(new { result.message });
+                }
 
-        //        return Ok(new { result.message });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { message = ex.Message });
-        //    }
-        //}
+                return Ok(new { result.message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         //[HttpPut("{id}")]
         //public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
