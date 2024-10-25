@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCM_API.Models;
 
 using SCM_API.Clase;
+using SCM_API.Lib;
 
 namespace SCM_API.Controllers
 {
@@ -42,6 +43,45 @@ namespace SCM_API.Controllers
             try
             {
                 var result = new Traslados().CrearTraslado(traslado);
+
+                if (result.status == false)
+                {
+                    return BadRequest(new { result.message });
+                }
+
+                return Ok(new { result.message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult EditarTraslado(int id, [FromBody] TrasladoClass traslado)
+        {
+            try
+            {
+                var result = new Traslados().EditarTraslado(id, traslado); 
+                if(result.status == false)
+                {
+                    return BadRequest(new { result.message });
+                }
+                return Ok(new { result.message });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult EliminarTraslado(int id)
+        {
+            try
+            {
+                var result = new Traslados().EliminarTraslado(id);
 
                 if (result.status == false)
                 {
