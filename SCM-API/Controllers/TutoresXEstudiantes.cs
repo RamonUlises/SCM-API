@@ -14,7 +14,7 @@ namespace SCM_API.Controllers
             [HttpGet]
             public IActionResult ObtenerTutoresEstudiantes ()
             {
-                var tutor = new Models.TutoresEstudiantes().ObtenerTutoresEstudiantes();
+                var tutor = new TutoresEstudiantes().ObtenerTutoresEstudiantes();
 
                 if (tutor == null)
                 {
@@ -27,7 +27,7 @@ namespace SCM_API.Controllers
             [HttpGet("{id}")]
             public IActionResult ObtenerTutoresEstudiantes(int id)
             {
-                var tutor = new Models.TutoresEstudiantes().ObtenerTutoresEstudiantes(id);
+                var tutor = new TutoresEstudiantes().ObtenerTutoresEstudiantes(id);
 
                 if (tutor == null)
                 {
@@ -49,7 +49,7 @@ namespace SCM_API.Controllers
                         return BadRequest(new { res.message });
                     }
 
-                    var result = new Models.TutoresEstudiantes().CrearTutoresEstudiantes(tutores);
+                    var result = new TutoresEstudiantes().CrearTutoresEstudiantes(tutores);
                     if (result.status == false)
                     {
                         return BadRequest(new { result.message });
@@ -75,7 +75,7 @@ namespace SCM_API.Controllers
                         return BadRequest(new { res.message });
                     }
 
-                    var result = new Models.TutoresEstudiantes().EditarTutoresEstudiantes(id, tutores);
+                    var result = new TutoresEstudiantes().EditarTutoresEstudiantes(id, tutores);
                     if (result.status == false)
                     {
                         return BadRequest(new { result.message });
@@ -92,7 +92,7 @@ namespace SCM_API.Controllers
             [HttpDelete("{id}")]
             public IActionResult EliminarTutoresEstudiantes(int id)
             {
-                var result = new Models.TutoresEstudiantes().EliminarTutoresEstudiantes(id);
+                var result = new TutoresEstudiantes().EliminarTutoresEstudiantes(id);
 
                 if (result.status == false)
                 {
@@ -101,8 +101,6 @@ namespace SCM_API.Controllers
 
                 return Ok(new { result.message });
             }
-        
-
         }
     }
 }
