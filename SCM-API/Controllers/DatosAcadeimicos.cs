@@ -60,43 +60,43 @@ namespace SCM_API.Controllers
             }
         }
 
-        //[HttpPut("{id}")]
-        //public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
-        //{
-        //    try
-        //    {
-        //        var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+        [HttpPut("{id}")]
+        public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
+        {
+            try
+            {
+                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
 
-        //        if (res.status == false)
-        //        {
-        //            return BadRequest(new { res.message });
-        //        }
+                if (res.status == false)
+                {
+                    return BadRequest(new { res.message });
+                }
 
-        //        var result = new Models.DatosAcademicos().ActualizarDatosAcademicos(id, datosAcademicos);
-        //        if (result.status == false)
-        //        {
-        //            return BadRequest(new { result.message });
-        //        }
+                var result = new Models.DatosAcademicos().EditarDatosAcademicos(id, datosAcademicos);
+                if (result.status == false)
+                {
+                    return BadRequest(new { result.message });
+                }
 
-        //        return Ok(new { result.message });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { message = ex.Message });
-        //    }
-        //}
+                return Ok(new { result.message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult EliminarDatosAcademicos(int id)
-        //{
-        //    var result = new Models.DatosAcademicos().EliminarDatosAcademicos(id);
+        [HttpDelete("{id}")]
+        public IActionResult EliminarDatosAcademicos(int id)
+        {
+            var result = new Models.DatosAcademicos().EliminarDatosAcademicos(id);
 
-        //    if (result.status == false)
-        //    {
-        //        return BadRequest(new { result.message });
-        //    }
+            if (result.status == false)
+            {
+                return BadRequest(new { result.message });
+            }
 
-        //    return Ok(new { result.message });
-        //}
+            return Ok(new { result.message });
+        }
     }
 }

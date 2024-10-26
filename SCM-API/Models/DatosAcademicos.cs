@@ -231,7 +231,7 @@ namespace SCM_API.Models
                 Console.WriteLine(ex.Message);
                 return new Errors { message = "Error al editar datos academicos", status = false };
             }
-        }       
+        }
         public Errors EliminarDatosAcademicos(int id)
         {
             try
@@ -261,3 +261,4 @@ namespace SCM_API.Models
             }
         }
     }
+}
