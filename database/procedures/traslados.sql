@@ -40,18 +40,41 @@ BEGIN
     PRINT 'Traslado actualizado correctamente.';
 END;
 
--- procedure para obtener traslados por estudiante
-CREATE PROCEDURE sp_obtener_traslados_por_estudiante
-    @IdEstudiante INT
+CREATE PROCEDURE sp_obtener_traslados
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM estudiantes WHERE id_estudiante = @IdEstudiante)
-    BEGIN
-        RAISERROR('El estudiante especificado no existe.', 16, 1);
-        RETURN;
-    END
+	SELECT 
+	  t.id_traslado,
+	  t.motivo_traslado,
+	  t.fecha_traslado,
+	  t.codigo_estudiante,
+	  c.centro AS centro,
+	  p.periodo AS periodo,
+	  e.nombres AS estudiante
+	  FROM traslados t
+	  LEFT JOIN centros c ON c.centro = t.id_centro
+	  LEFT JOIN periodos p ON p.id_periodo = t.id_periodo
+	  LEFT JOIN estudiantes e ON e.id_estudiante = t.id_estudiante;
+END;
 
-    SELECT * FROM traslados WHERE id_estudiante = @IdEstudiante;
+-- procedure para obtener traslados por estudiante
+CREATE PROCEDURE sp_obtener_traslados_id
+ @id INT
+AS
+BEGIN
+	SELECT 
+	  t.id_traslado,
+	  t.motivo_traslado,
+	  t.fecha_traslado,
+	  t.codigo_estudiante,
+	  c.centro AS centro,
+	  p.periodo AS periodo,
+	  e.nombres AS estudiante
+	  FROM traslados t
+	  LEFT JOIN centros c ON c.centro = t.id_centro
+	  LEFT JOIN periodos p ON p.id_periodo = t.id_periodo
+	  LEFT JOIN estudiantes e ON e.id_estudiante = t.id_estudiante
+	  WHERE id_traslado = @id;
 END;
 
 -- procedure para eliminar traslado
