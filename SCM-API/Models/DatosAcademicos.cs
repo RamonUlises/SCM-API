@@ -32,6 +32,7 @@ namespace SCM_API.Models
                         Turno = reader["turno"].ToString() ?? string.Empty,
                         Centro = reader["centro"].ToString() ?? string.Empty,
                         IdEstudiante = reader["estudiante"].ToString() ?? string.Empty
+
                     };
 
                     datosAcademicos.Add(datosAcademico);
