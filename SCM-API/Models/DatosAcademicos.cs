@@ -233,23 +233,16 @@ namespace SCM_API.Models
                 return new Errors { message = "Error al editar datos academicos", status = false };
             }
         }
-        public Errors EliminarDatosAcademicos(int id)
+        public Errors EliminarDatosAcademicos(string codigo)
         {
             try
             {
                 SqlConnection conexion = new DBConnection().AbrirConexion();
 
-                string query = "EXEC sp_eliminar_datos_academicos @id";
-                int idDatosAcademicos = new ExistingDate().ExistingDateId("id", "datos_academicos", "id", id.ToString());
-
-                if (idDatosAcademicos == 0)
-                {
-                    new DBConnection().CerrarConexion(conexion);
-                    return new Errors { status = false, message = "Datos academicos no encontrados" };
-                }
+                string query = "EXEC sp_eliminar_datos_academicos @codigo";
 
                 SqlCommand command = new(query, conexion);
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@codigo", codigo);
                 command.ExecuteNonQuery();
 
                 new DBConnection().CerrarConexion(conexion);
@@ -258,7 +251,7 @@ namespace SCM_API.Models
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new Errors { message = "Error al eliminar datos academicos", status = false };
+                return new Errors { message = $"Para eliminar los datos academicos de {codigo} primero debe eliminar sus traslados", status = false };
             }
         }
     }

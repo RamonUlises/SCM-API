@@ -86,10 +86,10 @@ namespace SCM_API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult EliminarDatosAcademicos(int id)
+        [HttpDelete("{codigo}")]
+        public IActionResult EliminarDatosAcademicos(string codigo)
         {
-            var result = new Models.DatosAcademicos().EliminarDatosAcademicos(id);
+            var result = new Models.DatosAcademicos().EliminarDatosAcademicos(codigo);
 
             if (result.status == false)
             {

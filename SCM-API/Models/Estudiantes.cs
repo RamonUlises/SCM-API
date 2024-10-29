@@ -303,7 +303,7 @@ namespace SCM_API.Models
             } catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new Errors { message = "Error al eliminar estudiante", status = false };
+                return new Errors { message = "Para eliminar un estudiante primero elimine sus datos académicos", status = false };
             }
         }
     }

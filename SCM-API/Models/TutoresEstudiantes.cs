@@ -164,24 +164,17 @@ namespace SCM_API.Models
                 SqlConnection conexion = new DBConnection().AbrirConexion();
                 string query = "EXEC sp_borrar_tutor_x_estudiante @id_tutor_x_estudiante";
 
-                int id_tutor_x_estudiante = new ExistingDate().ExistingDateId("id_tutor_x_estudiante", "Tutor", "id_tutor_x_estudiante", id.ToString());
-
-                if (id_tutor_x_estudiante == 0)
-                {
-                    return new Errors { message = "tutor no encontrado", status = false };
-                }
-
                 SqlCommand command = new(query, conexion);
                 command.Parameters.AddWithValue("@id_tutor_x_estudiante", id);
                 command.ExecuteNonQuery();
 
                 new DBConnection().CerrarConexion(conexion);
-                return new Errors { message = "Tutor Eliminado por completo", status = true };
+                return new Errors { message = "Tutor eliminado con exito", status = true };
             }
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new Errors { message = "Error al eliminar tutor", status = false };
+                return new Errors { message = "No se puede eliminar el tutor porque esta enlazado a un estudiante", status = false };
             }
         }
         public int TutorCedula(string cedula)

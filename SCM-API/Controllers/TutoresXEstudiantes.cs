@@ -5,8 +5,6 @@ using SCM_API.Models;
 
 namespace SCM_API.Controllers
 {
-    public class TutoresXEstudiantes
-    {
         [Route("/api/tutores-estudiantes")]
         [ApiController]
         public class TutoresXEstudiante : Controller
@@ -89,6 +87,7 @@ namespace SCM_API.Controllers
                 }
             }
 
+
             [HttpDelete("{id}")]
             public IActionResult EliminarTutoresEstudiantes(int id)
             {
@@ -102,5 +101,4 @@ namespace SCM_API.Controllers
                 return Ok(new { result.message });
             }
         }
-    }
 }
