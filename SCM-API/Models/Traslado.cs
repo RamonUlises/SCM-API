@@ -1,5 +1,6 @@
 ﻿using SCM_API.Clase;
 using SCM_API.Connection;
+using SCM_API.Controllers;
 using SCM_API.Lib;
 using System.Data.SqlClient;
 
@@ -89,10 +90,42 @@ namespace SCM_API.Models
             {
                 SqlConnection connection = new DBConnection().AbrirConexion();
                 string query = "EXEC sp_agregar_traslado @Motivo_Traslado, @Fecha_Traslado, @Codigo_Estudiante, @Id_Centro, @Id_Periodo, @Id_Estudiante";
-                
-                int idEstudiante = Convert.ToInt32(traslado.IdEstudiante);
-                int idCentro = Convert.ToInt32(traslado.IdCentro);
-                int idPeriodo = Convert.ToInt32(traslado.IdPeriodo);
+
+                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "id_estudiante", traslado.IdEstudiante.ToLower());
+                int idCentro = new ExistingDate().ExistingDateId("id_centro", "centros", "centro", traslado.IdCentro.ToLower());
+                int idPeriodo = new ExistingDate().ExistingDateId("id_periodo", "periodos", "periodo", traslado.IdPeriodo.ToLower());
+                bool existDatos = new ExistingDate().ExistingDatosAcademicos(traslado.CodigoEstudiante);
+                bool existTraslado = new ExistingDate().ExistingTraslado(traslado.CodigoEstudiante, traslado.IdEstudiante);
+
+                if (existTraslado)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { status = false, message = "Traslado ya existe" };
+                }
+
+                if (!existDatos)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { status = false, message = "Datos academicos no encontrados" };
+                }
+
+                if (idEstudiante == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Estudiante no encontrado", status = false };
+                }
+
+                if (idCentro == 0)
+                { 
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Centro no encontrado", status = false };
+                }
+
+                if (idPeriodo == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Periodo no encontrado", status = false };
+                }
 
                 SqlCommand command = new(query, connection);
                 command.Parameters.AddWithValue("@Id_Estudiante", idEstudiante);
@@ -124,9 +157,37 @@ namespace SCM_API.Models
                 SqlConnection connection = new DBConnection().AbrirConexion();
                 string query = "EXEC sp_actualizar_traslado @Id_Traslado, @Motivo_Traslado, @Fecha_Traslado, @Codigo_Estudiante, @Id_Centro, @Id_Periodo, @Id_Estudiante";
 
-                int idEstudiante = Convert.ToInt32(traslado.IdEstudiante);
-                int idCentro = Convert.ToInt32(traslado.IdCentro);
-                int idPeriodo = Convert.ToInt32(traslado.IdPeriodo);
+                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "id_estudiante", traslado.IdEstudiante.ToLower());
+                int idCentro = new ExistingDate().ExistingDateId("id_centro", "centros", "centro", traslado.IdCentro.ToLower());
+                int idPeriodo = new ExistingDate().ExistingDateId("id_periodo", "periodos", "periodo", traslado.IdPeriodo.ToLower());
+                bool existDatos = new ExistingDate().ExistingDatosAcademicos(traslado.CodigoEstudiante);
+                int idTraslado = new ExistingDate().ExistingDateId("id_traslado", "traslados", "id_traslado", id.ToString());
+
+                if (idTraslado == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Traslado no encontrado", status = false };
+                }
+                if (!existDatos)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { status = false, message = "Datos academicos no encontrados" };
+                }
+                if (idEstudiante == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Estudiante no encontrado", status = false };
+                }
+                if (idCentro == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Centro no encontrado", status = false };
+                }
+                if (idPeriodo == 0)
+                {
+                    new DBConnection().CerrarConexion(connection);
+                    return new Errors { message = "Periodo no encontrado", status = false };
+                }
 
                 SqlCommand command = new(query, connection);
                 command.Parameters.AddWithValue("@Id_Traslado", id);
@@ -169,12 +230,12 @@ namespace SCM_API.Models
                 }
 
                 new DBConnection().CerrarConexion(connection);
-                return new Errors { message = "Error al eliminar traslado", status = false };
+                return new Errors { message = "Traslado no encontrado", status = false };
             }
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new Errors { message = "Error al eliminar traslado", status = false };
+                return new Errors { message = "Traslado no encontrado", status = false };
             }
         }
 

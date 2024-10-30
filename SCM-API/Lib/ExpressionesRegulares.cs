@@ -6,6 +6,6 @@
         public readonly string Fecha = @"[0-9]{4}-[0-9]{2}-[0-9]{2}$";
         public readonly string Telefono = @"^[0-9]{4}-[0-9]{4}$";
         public readonly string Number = @"^\d+(\.\d+)?$";
-        public readonly string CodigoEstudiante = @"^[A-Z]{3,5}[0-9]{13,15}$";
+        public readonly string CodigoEstudiante = @"^[A-Z]{4}-[0-9]{6}-[0-9]{7}$";
     }
 }

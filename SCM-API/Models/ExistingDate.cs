@@ -31,5 +31,87 @@ namespace SCM_API.Models
                 return 0;
             }
         }
+        public bool ExistingDatosAcademicos(string codigoEstudiante)
+        {
+            try
+            {
+                SqlConnection conexion = new DBConnection().AbrirConexion();
+
+                string query = "SELECT * FROM datos_academicos WHERE codigo_estudiante = @codigoEstudiante";
+                SqlCommand command = new(query, conexion);
+                command.Parameters.AddWithValue("@codigoEstudiante", codigoEstudiante);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                bool exist = false;
+
+                if (reader.Read())
+                {
+                    exist = true;
+                }
+
+                new DBConnection().CerrarConexion(conexion);
+                return exist;
+            } catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        public bool ExistingEstudentDatosAcademicos(string idEstudiante)
+        {
+            try
+            {
+                SqlConnection conexion = new DBConnection().AbrirConexion();
+
+                string query = "SELECT * FROM datos_academicos WHERE id_estudiante = @idEstudiante";
+                SqlCommand command = new(query, conexion);
+                command.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                bool exist = false;
+
+                if (reader.Read())
+                {
+                    exist = true;
+                }
+
+                new DBConnection().CerrarConexion(conexion);
+                return exist;
+            } catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        public bool ExistingTraslado(string codigoEstudiante, string idEstudiante)
+        {
+            try
+            {
+                SqlConnection conexion = new DBConnection().AbrirConexion();
+
+                string query = "SELECT * FROM traslados WHERE codigo_estudiante = @codigoEstudiante OR id_estudiante = @idEstudiante";
+                SqlCommand command = new(query, conexion);
+                command.Parameters.AddWithValue("@codigoEstudiante", codigoEstudiante);
+                command.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                bool exist = false;
+
+                if (reader.Read())
+                {
+                    exist = true;
+                }
+
+                new DBConnection().CerrarConexion(conexion);
+                return exist;
+            } catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
     }
 }

@@ -16,9 +16,9 @@ namespace SCM_API.Controllers
         {
             var traslados = new Traslados().ObtenerTraslado();
 
-            if (traslados == null)
+            if (traslados == null || traslados.Count == 0)
             {
-                return NotFound(new { message = "No se encontraron traslados" });
+                return BadRequest(new { message = "No se encontraron traslados" });
             }
 
             return Ok(traslados);
@@ -31,7 +31,7 @@ namespace SCM_API.Controllers
 
             if (traslado == null)
             {
-                return NotFound(new { message = "Traslado no encontrado" });
+                return BadRequest(new { message = "Traslado no encontrado" });
             }
 
             return Ok(traslado);
@@ -42,6 +42,13 @@ namespace SCM_API.Controllers
         {
             try
             {
+                var res = new ValidateTraslados().ValidarTraslados(traslado);
+
+                if (res.status == false)
+                {
+                    return BadRequest(new { res.message });
+                }
+
                 var result = new Traslados().CrearTraslado(traslado);
 
                 if (result.status == false)
@@ -62,6 +69,13 @@ namespace SCM_API.Controllers
         {
             try
             {
+                var res = new ValidateTraslados().ValidarTraslados(traslado);
+
+                if (res.status == false)
+                {
+                    return BadRequest(new { res.message });
+                }
+
                 var result = new Traslados().EditarTraslado(id, traslado); 
                 if(result.status == false)
                 {

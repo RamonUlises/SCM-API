@@ -53,7 +53,7 @@ namespace SCM_API.Lib
         }
         public void CodigoEstudiante(string element)
         { 
-            Expression(element, new ExpressionesRegulares().CodigoEstudiante, "Código Estudiante", "000000");
+            Expression(element, new ExpressionesRegulares().CodigoEstudiante, "Código Estudiante", "XXXX-000000-0000000");
         }
         public void FechaMatricula(string element)
         {

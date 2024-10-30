@@ -11,11 +11,11 @@ namespace SCM_API.Controllers
         [HttpGet]
         public IActionResult ObtenerDatosAcademicos()
         {
-            var datosAcademicos = new Models.DatosAcademicos().ObtenerDatosAcademicos();
+            List<DatosAcademicosClass>? datosAcademicos = new Models.DatosAcademicos().ObtenerDatosAcademicos();
 
-            if (datosAcademicos == null)
+            if (datosAcademicos == null || datosAcademicos.Count == 0)
             {
-                return NotFound();
+                return BadRequest(new { message = "Sin datos académicos registrados"});
             }
 
             return Ok(datosAcademicos);
@@ -28,7 +28,7 @@ namespace SCM_API.Controllers
 
             if (datosAcademicos == null)
             {
-                return NotFound(new { message = "Datos academicos no encontrados" });
+                return BadRequest(new { message = "Datos academicos no encontrados" });
             }
 
             return Ok(datosAcademicos);
@@ -39,7 +39,7 @@ namespace SCM_API.Controllers
         {
             try
             {
-                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos, false);
 
                 if (res.status == false)
                 {
@@ -60,19 +60,19 @@ namespace SCM_API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult ActualizarDatosAcademicos(int id, [FromBody] DatosAcademicosClass datosAcademicos)
+        [HttpPut("{codigo}")]
+        public IActionResult ActualizarDatosAcademicos(string codigo, [FromBody] DatosAcademicosClass datosAcademicos)
         {
             try
             {
-                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos);
+                var res = new ValidateDatosAcademicos().ValidarDatosAcademicos(datosAcademicos, true);
 
                 if (res.status == false)
                 {
                     return BadRequest(new { res.message });
                 }
 
-                var result = new Models.DatosAcademicos().EditarDatosAcademicos(id, datosAcademicos);
+                var result = new Models.DatosAcademicos().EditarDatosAcademicos(codigo, datosAcademicos);
                 if (result.status == false)
                 {
                     return BadRequest(new { result.message });

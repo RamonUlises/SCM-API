@@ -27,7 +27,7 @@ namespace SCM_API.Models
                         NivelEducativo = reader["nivel_educativo"].ToString() ?? string.Empty,
                         Repitente = Convert.ToDouble(reader["repitente"]) == 1,
                         Modalidad = reader["modalidad"].ToString() ?? string.Empty,
-                        Grado = reader["grado"].ToString() ?? string.Empty,
+                        Grado = Convert.ToInt32(reader["grado"].ToString()),
                         Seccion = reader["seccion"].ToString() ?? string.Empty,
                         Turno = reader["turno"].ToString() ?? string.Empty,
                         Centro = reader["centro"].ToString() ?? string.Empty,
@@ -40,9 +40,8 @@ namespace SCM_API.Models
                 new DBConnection().CerrarConexion(conexion);
                 return datosAcademicos;
             }
-            catch (SqlException ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -67,7 +66,7 @@ namespace SCM_API.Models
                         NivelEducativo = reader["nivel_educativo"].ToString() ?? string.Empty,
                         Repitente = Convert.ToDouble(reader["repitente"]) == 1,
                         Modalidad = reader["modalidad"].ToString() ?? string.Empty,
-                        Grado = reader["grado"].ToString() ?? string.Empty,
+                        Grado = Convert.ToInt32(reader["grado"].ToString()),
                         Seccion = reader["seccion"].ToString() ?? string.Empty,
                         Turno = reader["turno"].ToString() ?? string.Empty,
                         Centro = reader["centro"].ToString() ?? string.Empty,
@@ -77,9 +76,8 @@ namespace SCM_API.Models
                 new DBConnection().CerrarConexion(conexion);
                 return datosAcademico;
             }
-            catch (SqlException ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -89,14 +87,28 @@ namespace SCM_API.Models
             {
                 SqlConnection conexion = new DBConnection().AbrirConexion();
 
-                string query = "EXEC sp_crear_datos_academicos @codigo_estudiante, @fecha_matricula, @nivel_educativo, @repitente, @id_modalidad, @id_grado, @id_seccion, @id_turno, @id_centro, @id_estudiante";
+                string query = "EXEC sp_agregar_datos_academicos @codigo_estudiante, @fecha_matricula, @nivel_educativo, @repitente, @id_modalidad, @id_grado, @id_seccion, @id_turno, @id_centro, @id_estudiante";
 
                 int idModalidad = new ExistingDate().ExistingDateId("id_modalidad", "modalidades", "modalidad", datosAcademicos.Modalidad.ToLower());
-                int idGrado = new ExistingDate().ExistingDateId("id_grado", "grados", "grado", datosAcademicos.Grado.ToLower());
+                int idGrado = new ExistingDate().ExistingDateId("id_grado", "grados", "grado", datosAcademicos.Grado.ToString());
                 int idSeccion = new ExistingDate().ExistingDateId("id_seccion", "secciones", "seccion", datosAcademicos.Seccion.ToLower());
                 int idTurno = new ExistingDate().ExistingDateId("id_turno", "turnos", "turno", datosAcademicos.Turno.ToLower());
                 int idCentro = new ExistingDate().ExistingDateId("id_centro", "centros", "centro", datosAcademicos.Centro.ToLower());
-                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "codigo_estudiante", datosAcademicos.IdEstudiante.ToLower());
+                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "id_estudiante", datosAcademicos.IdEstudiante.ToLower());
+                bool existDatos = new ExistingDate().ExistingDatosAcademicos(datosAcademicos.CodigoEstudiante);
+                bool existEstudiante = new ExistingDate().ExistingEstudentDatosAcademicos(datosAcademicos.IdEstudiante);
+
+                if(existDatos)
+                {
+                    new DBConnection().CerrarConexion(conexion);
+                    return new Errors { status = false, message = "Ya existen datos académicos con este código de estudiante" };
+                }
+
+                if (existEstudiante)
+                {
+                    new DBConnection().CerrarConexion(conexion);
+                    return new Errors { status = false, message = "Este estudiante ya posee datos académicos" };
+                }                           
 
                 if (idModalidad == 0)
                 {
@@ -149,26 +161,33 @@ namespace SCM_API.Models
                 new DBConnection().CerrarConexion(conexion);
                 return new Errors { status = false, message = "Error al crear datos academicos" };
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
                 return new Errors { message = "Error al crear datos academicos", status = false };
             }
         }
-        public Errors EditarDatosAcademicos(int id, DatosAcademicosClass datosAcademicos)
+        public Errors EditarDatosAcademicos(string codigo, DatosAcademicosClass datosAcademicos)
         {
             try
             {
                 SqlConnection conexion = new DBConnection().AbrirConexion();
 
-                string query = "EXEC sp_editar_datos_academicos @id, @codigo_estudiante, @fecha_matricula, @nivel_educativo, @repitente, @id_modalidad, @id_grado, @id_seccion, @id_turno, @id_centro, @id_estudiante";
+                string query = "EXEC sp_actualizar_datos_academicos @codigo_estudiante, @fecha_matricula, @nivel_educativo, @repitente, @id_modalidad, @id_grado, @id_seccion, @id_turno, @id_centro, @id_estudiante";
 
                 int idModalidad = new ExistingDate().ExistingDateId("id_modalidad", "modalidades", "modalidad", datosAcademicos.Modalidad.ToLower());
-                int idGrado = new ExistingDate().ExistingDateId("id_grado", "grados", "grado", datosAcademicos.Grado.ToLower());
+                int idGrado = new ExistingDate().ExistingDateId("id_grado", "grados", "grado", datosAcademicos.Grado.ToString());
                 int idSeccion = new ExistingDate().ExistingDateId("id_seccion", "secciones", "seccion", datosAcademicos.Seccion.ToLower());
                 int idTurno = new ExistingDate().ExistingDateId("id_turno", "turnos", "turno", datosAcademicos.Turno.ToLower());
                 int idCentro = new ExistingDate().ExistingDateId("id_centro", "centros", "centro", datosAcademicos.Centro.ToLower());
-                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "codigo_estudiante", datosAcademicos.IdEstudiante.ToLower());
+                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "id_estudiante", datosAcademicos.IdEstudiante.ToLower());
+                bool existDatos = new ExistingDate().ExistingDatosAcademicos(codigo);
+
+                if (!existDatos)
+                {
+                    new DBConnection().CerrarConexion(conexion);
+                    return new Errors { status = false, message = "Datos academicos no encontrados" };
+                }
 
                 if (idModalidad == 0)
                 {
@@ -207,8 +226,7 @@ namespace SCM_API.Models
                 }
 
                 SqlCommand command = new(query, conexion);
-                command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@codigo_estudiante", datosAcademicos.CodigoEstudiante);
+                command.Parameters.AddWithValue("@codigo_estudiante", codigo);
                 command.Parameters.AddWithValue("@fecha_matricula", datosAcademicos.FechaMatricula);
                 command.Parameters.AddWithValue("@nivel_educativo", datosAcademicos.NivelEducativo);
                 command.Parameters.AddWithValue("@repitente", datosAcademicos.Repitente);
@@ -227,9 +245,8 @@ namespace SCM_API.Models
                 new DBConnection().CerrarConexion(conexion);
                 return new Errors { status = false, message = "Error al editar datos academicos" };
             }
-            catch (SqlException ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
                 return new Errors { message = "Error al editar datos academicos", status = false };
             }
         }
@@ -237,6 +254,13 @@ namespace SCM_API.Models
         {
             try
             {
+                bool exist = new ExistingDate().ExistingDatosAcademicos(codigo);
+
+                if (!exist)
+                {
+                    return new Errors { message = "Datos academicos no encontrados", status = false };
+                }
+
                 SqlConnection conexion = new DBConnection().AbrirConexion();
 
                 string query = "EXEC sp_eliminar_datos_academicos @codigo";
@@ -248,9 +272,8 @@ namespace SCM_API.Models
                 new DBConnection().CerrarConexion(conexion);
                 return new Errors { message = "Datos academicos eliminado correctamente", status = true };
             }
-            catch (SqlException ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
                 return new Errors { message = $"Para eliminar los datos academicos de {codigo} primero debe eliminar sus traslados", status = false };
             }
         }
