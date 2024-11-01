@@ -1,0 +1,1 @@
+EXEC sp_agregar_datos_academicos 'AAAA-123456-1234567', '2024-11-21', 'alto', 0, 1, 1, 1, 1, 1, 7;

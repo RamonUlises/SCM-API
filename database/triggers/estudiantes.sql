@@ -23,9 +23,9 @@ BEGIN
         THROW 50001, 'El nombre no puede ser nulo', 1;
     END;
     
-    IF @cedula IS NULL OR @cedula NOT LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][A-Z]'
+    IF @cedula IS NOT NULL AND @cedula <> '' AND @cedula NOT LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][A-Z]'
     BEGIN
-        THROW 50002, 'La cédula no puede ser nula y debe tener el formato 000-000000-0000X', 1;
+        THROW 50002, 'La cédula debe tener el formato 000-000000-0000#', 1;
     END;
     
     IF @fecha_nacimiento IS NULL
@@ -69,7 +69,6 @@ BEGIN
     END;
 END;
 
--- Trigger antes de actualizar en la tabla estudiantes
 CREATE TRIGGER trg_actualizar_estudiante
 ON estudiantes
 AFTER UPDATE
@@ -93,9 +92,9 @@ BEGIN
         THROW 50001, 'El nombre no puede ser nulo', 1;
     END;
 
-    IF @cedula IS NULL OR @cedula NOT LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][A-Z]'
+    IF @cedula IS NOT NULL AND @cedula <> '' AND @cedula NOT LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][A-Z]'
     BEGIN
-        THROW 50002, 'La cédula no puede ser nula y debe tener el formato 000-000000-0000#', 1;
+        THROW 50002, 'La cédula debe tener el formato 000-000000-0000#', 1;
     END;
 
     IF @fecha_nacimiento IS NULL

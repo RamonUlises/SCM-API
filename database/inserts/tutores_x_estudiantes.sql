@@ -1,0 +1,1 @@
+EXEC sp_agregar_tutor_x_estudiante 'Juan Ulises', 'Hernández Rodriguez', '125-658965-5875R', '5781-0634';

@@ -6,24 +6,13 @@ FOR INSERT, UPDATE
 AS
 BEGIN
     IF EXISTS(
-        SELECT cedula FROM tutores_x_estudiantes
-        WHERE cedula = (SELECT cedula FROM INSERTED)
+        SELECT 1
+        FROM tutores_x_estudiantes AS te
+        INNER JOIN INSERTED AS i ON te.cedula = i.cedula 
+        WHERE te.id_tutor_x_estudiante <> i.id_tutor_x_estudiante
     )
     BEGIN
-        RAISERROR('La cedula ya existe en la base de datos', 16, 1)
-        ROLLBACK TRANSACTION
+        RAISERROR('La cédula ya existe en la base de datos', 16, 1);
+        ROLLBACK TRANSACTION;
     END
-END;
-
-CREATE TRIGGER trg_update_tutores_x_estudiantes
-ON tutores_x_estudiantes
-FOR UPDATE
-AS
-BEGIN
-    UPDATE tutores_x_estudiantes
-    SET nombres = (SELECT nombres FROM INSERTED),
-    apellidos = (SELECT apellidos FROM INSERTED),
-    cedula = (SELECT cedula FROM INSERTED),
-    telefono = (SELECT telefono FROM INSERTED)
-    WHERE id_tutor_x_estudiante = (SELECT id_tutor_x_estudiante FROM INSERTED)
 END;

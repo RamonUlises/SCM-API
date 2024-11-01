@@ -1,7 +1,7 @@
 EXEC sp_insertar_estudiante
     @nombres = 'Juan',
     @apellidos = 'Perez',
-    @cedula = '1234567890',
+    @cedula = '123-456789-1234F',
     @fecha_nacimiento = '2000-01-01',
     @direccion = 'Calle 1',
     @telefono = '123456789',
