@@ -8,9 +8,26 @@ namespace SCM_API.Lib
         {
             try
             {
+                new Validates().NotNull(estudiante.Nombres);
+                new Validates().NotNull(estudiante.Apellidos);
+                new Validates().NotNull(estudiante.FechaNacimiento);
+                new Validates().NotNull(estudiante.Direccion);
+                new Validates().NotNull(estudiante.Telefono);
+                new Validates().NotNull(estudiante.PartidaNacimiento);
+                new Validates().NotNull(estudiante.FechaMatricula);
+                new Validates().NotNull(estudiante.Barrio);
+                new Validates().NotNull(estudiante.Peso);
+                new Validates().NotNull(estudiante.Talla);
+                new Validates().NotNull(estudiante.Pais);
+                new Validates().NotNull(estudiante.Departamento);
+                new Validates().NotNull(estudiante.Municipio);
+                new Validates().NotNull(estudiante.Nacionalidad);
                 new Validates().String(estudiante.Nombres, "Nombres");
                 new Validates().String(estudiante.Apellidos, "Apellidos");
-                new Validates().Cedula(estudiante.Cedula);  
+                if(estudiante.Cedula.Length > 0)
+                {
+                    new Validates().Cedula(estudiante.Cedula);  
+                }
                 new Validates().Fecha(estudiante.FechaNacimiento);
                 new Validates().String(estudiante.Direccion, "Dirección");
                 new Validates().Telefono(estudiante.Telefono);

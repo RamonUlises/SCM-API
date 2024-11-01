@@ -81,20 +81,20 @@ namespace SCM_API.Models
                 SqlConnection conexion = new DBConnection().AbrirConexion();
                 string query = "EXEC sp_agregar_tutor_x_estudiante @nombres, @apellidos, @cedula, @telefono";
 
-                int idTutorEstudiante = new TutoresEstudiantes().TutorCedula(estudiante.Cedula);
+                int idTutorEstudiante = TutorCedula(estudiante.Cedula);
 
-                 if (idTutorEstudiante == 0)
+                 if (idTutorEstudiante != 0)
                 {
                     new DBConnection().CerrarConexion(conexion);
-                    return new Errors { message = "Tutor no encontrado", status = false };
+                    return new Errors { message = "Ya existe un tutor con esta céedula", status = false };
                 }
 
                 SqlCommand command = new(query, conexion);
                 command.Parameters.AddWithValue("@nombres", estudiante.Nombre);
                 command.Parameters.AddWithValue("@apellidos", estudiante.Apellido);
                 command.Parameters.AddWithValue("@telefono", estudiante.Telefono);
+                command.Parameters.AddWithValue("@cedula", estudiante.Cedula);
                 
-
                 if (command.ExecuteNonQuery() > 0)
                 {
                     new DBConnection().CerrarConexion(conexion);
@@ -114,7 +114,7 @@ namespace SCM_API.Models
         {
             try
             {
-                int id_tutor_x_estudiante = new ExistingDate().ExistingDateId("id_tutor_x_estudiante", "tutor", "id_tutor_x_estudiante", id.ToString());
+                int id_tutor_x_estudiante = new ExistingDate().ExistingDateId("id_tutor_x_estudiante", "tutores_x_estudiantes", "id_tutor_x_estudiante", id.ToString());
 
                 if (id_tutor_x_estudiante == 0)
                 {
@@ -126,8 +126,6 @@ namespace SCM_API.Models
 
                 //editar tutor
                 int id_tutor = new ExistingDate().ExistingDateId("id_tutor_x_estudiante", "Tutor", "id_tutor_x_estudiante", id.ToString());
-
-
 
                 if (id_tutor_x_estudiante == 0)
                 {
@@ -145,7 +143,7 @@ namespace SCM_API.Models
                 if (command.ExecuteNonQuery() > 0)
                 {
                     new DBConnection().CerrarConexion(conexion);
-                    return new Errors { message = "Estudiante actualizado correctamente", status = true };
+                    return new Errors { message = "Tutor actualizado correctamente", status = true };
                 }
 
                 new DBConnection().CerrarConexion(conexion);
@@ -195,10 +193,38 @@ namespace SCM_API.Models
                     id = Convert.ToInt32(reader["id_tutor_x_estudiante"]);
                 }
 
+                new DBConnection().CerrarConexion(conexion);
                 return id;
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return 0;
+            }
+        }
+        public int TutorCedulaEdit(int id, string cedula)
+        {
+            try
+            {
+                SqlConnection conexion = new DBConnection().AbrirConexion();
+                string query = "SELECT id_tutor_x_estudiante FROM tutores_x_estudiantes WHERE cedula = @cedula AND id_tutor_x_estudiante != @id";
+                SqlCommand command = new(query, conexion);
+
+                command.Parameters.AddWithValue("@cedula", cedula);
+                command.Parameters.AddWithValue("@id", id);
+                SqlDataReader reader = command.ExecuteReader();
+
+                int idNew = 0;
+
+                if(reader.Read())
+                {
+                    idNew = Convert.ToInt32(reader["id_tutor_x_estudiante"]);
+                }
+
+                new DBConnection().CerrarConexion(conexion);
+                return idNew;
+            }
+            catch
+            {
                 return 0;
             }
         }

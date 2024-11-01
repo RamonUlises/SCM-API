@@ -122,6 +122,16 @@ namespace SCM_API.Models
                 int idLengua = new ExistingDate().ExistingDateId("id_lengua", "lenguas", "lengua", estudiante.Lengua.ToLower());
                 int idDiscapacidad = new ExistingDate().ExistingDateId("id_discapacidad", "discapacidades", "discapacidad", estudiante.Discapacidad.ToLower());
                 int idTutorEstudiante = new TutoresEstudiantes().TutorCedula(estudiante.TutorEstudiante);
+                int idEstudiante = new ExistingDate().ExistingDateId("id_estudiante", "estudiantes", "cedula", estudiante.Cedula);
+
+                if(estudiante.Cedula != "")
+                {
+                    if(idEstudiante > 01)
+                    {
+                        new DBConnection().CerrarConexion(conexion);
+                        return new Errors { message = "Ya existe un estudiante con está cédula", status = false };
+                    }
+                }
 
                 if(idSexo == 0)
                 {
@@ -156,7 +166,7 @@ namespace SCM_API.Models
                 SqlCommand command = new(query, conexion);
                 command.Parameters.AddWithValue("@nombres", estudiante.Nombres);
                 command.Parameters.AddWithValue("@apellidos", estudiante.Apellidos);
-                command.Parameters.AddWithValue("@cedula", estudiante.Cedula);
+                command.Parameters.AddWithValue("@cedula", estudiante.Cedula ?? string.Empty);
                 command.Parameters.AddWithValue("@fecha_nacimiento", estudiante.FechaNacimiento);
                 command.Parameters.AddWithValue("@direccion", estudiante.Direccion);
                 command.Parameters.AddWithValue("@telefono", estudiante.Telefono);
@@ -210,6 +220,17 @@ namespace SCM_API.Models
                 int idLengua = new ExistingDate().ExistingDateId("id_lengua", "lenguas", "lengua", estudiante.Lengua.ToLower());
                 int idDiscapacidad = new ExistingDate().ExistingDateId("id_discapacidad", "discapacidades", "discapacidad", estudiante.Discapacidad.ToLower());
                 int idTutorEstudiante = new TutoresEstudiantes().TutorCedula(estudiante.TutorEstudiante);
+                int idCedula = 0;
+
+                if(estudiante.Cedula != "")
+                {
+                    idCedula = EditCedula(id, estudiante.Cedula);
+                    if(idCedula > 0)
+                    {
+                        new DBConnection().CerrarConexion(conexion);
+                        return new Errors { message = "Ya existe un estudiante con está cédula", status = false };
+                    }
+                }
 
                 if(idSexo == 0)
                 {
@@ -304,6 +325,36 @@ namespace SCM_API.Models
             {
                 Console.WriteLine(ex.Message);
                 return new Errors { message = "Para eliminar un estudiante primero elimine sus datos académicos", status = false };
+            }
+        }
+
+        public int EditCedula(int id, string cedula)
+        {
+            try
+            {
+                SqlConnection conexion = new DBConnection().AbrirConexion();
+                string query = "SELECT * FROM estudiantes WHERE cedula = @cedula AND id_estudiante != @id_estudiante";
+
+                SqlCommand command = new(query, conexion);
+                command.Parameters.AddWithValue("@cedula", cedula);
+                command.Parameters.AddWithValue("@id_estudiante", id);
+                command.ExecuteNonQuery();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                int idCedula = 0;
+
+                if (reader.Read())
+                {
+                    idCedula = 1;
+                }
+
+                new DBConnection().CerrarConexion(conexion);
+                return idCedula;
+            } catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
             }
         }
     }

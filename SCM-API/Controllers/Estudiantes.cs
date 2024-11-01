@@ -13,9 +13,9 @@ namespace SCM_API.Controllers
         {
             var estudiantes = new Models.Estudiantes().ObtenerEstudiantes();
 
-            if (estudiantes == null)
+            if (estudiantes == null || estudiantes.Count == 0)
             {
-                return NotFound();
+                return BadRequest(new { message = "No hay estudiantes registrados"});
             }
 
             return Ok(estudiantes);
@@ -28,7 +28,7 @@ namespace SCM_API.Controllers
 
             if (estudiante == null)
             {
-                return NotFound(new { message = "Estudiante no encontrado" });
+                return BadRequest(new { message = "Estudiante no encontrado" });
             }
 
             return Ok(estudiante);

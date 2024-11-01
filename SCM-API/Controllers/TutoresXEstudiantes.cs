@@ -14,9 +14,9 @@ namespace SCM_API.Controllers
             {
                 var tutor = new TutoresEstudiantes().ObtenerTutoresEstudiantes();
 
-                if (tutor == null)
+                if (tutor == null || tutor.Count == 0)
                 {
-                    return NotFound();
+                    return BadRequest(new { message = "No hay tutores registrados" });
                 }
 
                 return Ok(tutor);
@@ -29,7 +29,7 @@ namespace SCM_API.Controllers
 
                 if (tutor == null)
                 {
-                    return NotFound(new { message = "Estudiante no encontrado" });
+                    return BadRequest(new { message = "Estudiante no encontrado" });
                 }
 
                 return Ok(tutor);
