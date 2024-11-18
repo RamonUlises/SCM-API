@@ -71,7 +71,7 @@ BEGIN
 	  p.periodo AS periodo,
 	  e.nombres AS estudiante
 	  FROM traslados t
-	  LEFT JOIN centros c ON c.centro = t.id_centro
+	  LEFT JOIN centros c ON c.id_centro = t.id_centro
 	  LEFT JOIN periodos p ON p.id_periodo = t.id_periodo
 	  LEFT JOIN estudiantes e ON e.id_estudiante = t.id_estudiante
 	  WHERE id_traslado = @id;
